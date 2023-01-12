@@ -37,7 +37,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     }
 
-    private AbstractTableModel createTabModel(ArrayList seznam) {
+    private AbstractTableModel createTabModel(final ArrayList seznam) {
          tableModel = new AbstractTableModel() {
              @Override
              public int getRowCount() {

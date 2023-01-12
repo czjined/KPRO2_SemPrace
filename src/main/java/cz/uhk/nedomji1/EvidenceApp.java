@@ -1,17 +1,18 @@
-package main.java.cz.uhk.nedomji1;
+package cz.uhk.nedomji1;
 
-import main.java.cz.uhk.nedomji1.data.People;
-import main.java.cz.uhk.nedomji1.data.Person;
-import main.java.cz.uhk.nedomji1.gui.MainFrame;
+import cz.uhk.nedomji1.data.People;
+import cz.uhk.nedomji1.data.Person;
+import cz.uhk.nedomji1.gui.MainFrame;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class EvidenceApp {
 
-    public static void main(String[] args) {
-        People evidence = new People();
+    public static void main(String[] args) throws IOException {
+        final People evidence = new People();
         evidence.createSampleList();
         for (Person osoba: evidence.getPersonList()) {
             System.out.println(osoba);

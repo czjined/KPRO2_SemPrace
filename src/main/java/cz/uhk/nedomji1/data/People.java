@@ -61,18 +61,14 @@ public class People {
 //        sortPeople();
         assignId(personList);
 
-        try {
-            CSVWriter writer = (CSVWriter) new CSVWriterBuilder(new FileWriter("yourfile.csv"))
-                    .withSeparator('\t')
-                    .build();
+        CSVWriter writer = (CSVWriter) new CSVWriterBuilder(new FileWriter("yourfile.csv"))
+                .withSeparator('\t')
+                .build();
 
-            // feed in your array (or convert your data to an array)
-            String[] entries = "first#second#third".split("#");
-            writer.writeNext(entries);
-            writer.close();
-        } finally {
-
-        }
+        // feed in your array (or convert your data to an array)
+        String[] entries = "first#second#third".split("#");
+        writer.writeNext(entries);
+        writer.close();
 
     }
 
