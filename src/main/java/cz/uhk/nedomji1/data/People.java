@@ -3,6 +3,7 @@ package cz.uhk.nedomji1.data;
 import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,19 +59,44 @@ public class People {
         personList.add(new Person("Eva", "Adamova"));
         personList.add(new Person("Martin", "Just"));
         personList.add(new Person("Kamil", "Barabas"));
+        personList.add(new Person("Jiri", "Novak"));
 //        sortPeople();
+        writePeopleToCSV(personList, "sampleFile.csv");
         assignId(personList);
+    }
 
-        CSVWriter writer = (CSVWriter) new CSVWriterBuilder(new FileWriter("yourfile.csv"))
-                .withSeparator('\t')
-                .build();
+    public void writePeopleToCSV(List<Person> listOsob, String filePath) {
 
-        // feed in your array (or convert your data to an array)
-        String[] entries = "first#second#third".split("#");
-        writer.writeNext(entries);
-        writer.close();
+        File file = new File(filePath);
+
+        try {
+            FileWriter outputFile = new FileWriter(file);
+            CSVWriter writer = (CSVWriter) new CSVWriterBuilder(outputFile)
+                    .withSeparator(';')
+                    .build();
+
+            // vytvoreni delimited listu pro zapis do file
+            List<String[]> entries = new ArrayList<>();
+            String[] textEntry = new String[4];
+            int ukazatel = 0;
+            for (Person itemPerson: listOsob) {
+                textEntry[0] = itemPerson.getFirstName();
+                textEntry[1] = itemPerson.getLastName();
+                textEntry[2] = itemPerson.getEmail();
+                textEntry[3] = itemPerson.getPhoneNumber();
+                System.out.println(textEntry[1]);
+                entries.add(textEntry);
+                writer.writeNext(textEntry);
+                ukazatel++;
+            }
+            writer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
 
     public void sortPeople() {
         List<String> BySurname = new ArrayList<String>();

@@ -152,7 +152,7 @@ public class MainFrame extends JFrame implements ActionListener {
          */
         table.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
-                if (e.getType() == TableModelEvent.UPDATE) {
+                if (e.getType() == TableModelEvent.INSERT) {
                     final int row = e.getFirstRow();
                     final int column = e.getColumn();
                     table.setValueAt("VALUE", row, column);
@@ -166,6 +166,7 @@ public class MainFrame extends JFrame implements ActionListener {
         table.setRowSorter(sorter);
             List<RowSorter.SortKey> sortKeys = new ArrayList<>();
             sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+            sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
             sorter.setSortKeys(sortKeys);
     }
 
