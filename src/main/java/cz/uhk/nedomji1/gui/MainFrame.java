@@ -31,6 +31,7 @@ public class MainFrame extends JFrame implements ActionListener {
     public MainFrame(ArrayList tabData) throws HeadlessException {
         super("Okno evidence");
         this.tabData = tabData;
+
         createTabModel(tabData);
         initWindow();
         pack();

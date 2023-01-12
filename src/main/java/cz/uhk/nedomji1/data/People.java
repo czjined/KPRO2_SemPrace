@@ -1,9 +1,12 @@
 package cz.uhk.nedomji1.data;
 
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
+import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +19,10 @@ public class People {
     private List<Person> personList = new ArrayList<Person>();
 
     public void People() {
+    }
 
-
+    public void People(List<Person> personList) {
+        this.personList = personList;
     }
 
     public int getListLenght() {
@@ -84,7 +89,7 @@ public class People {
                 textEntry[1] = itemPerson.getLastName();
                 textEntry[2] = itemPerson.getEmail();
                 textEntry[3] = itemPerson.getPhoneNumber();
-                System.out.println(textEntry[1]);
+//                System.out.println(textEntry[1]);
                 entries.add(textEntry);
                 writer.writeNext(textEntry);
                 ukazatel++;
@@ -93,6 +98,43 @@ public class People {
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public List<Person> readPeopleFromCSV(String filePath) {
+
+//        File file = new File(filePath);
+        List<Person> peopleRead = new ArrayList<Person>();
+
+        try {
+            FileReader fileReader = new FileReader(filePath);
+            CSVReader reader = new CSVReader(fileReader);
+
+            String[] nextRecord;
+            int krok = 1;
+            while ((nextRecord = reader.readNext()) != null) {
+
+                for (String cell: nextRecord) {
+
+                    String[] personString = cell.split(";");
+                    Person prs = new Person(personString[0], personString[1]);
+//                    System.out.printf("Read CSV, cell %d", krok);
+//                    System.out.println(personString[0]);
+
+                    peopleRead.add(prs);
+                    System.out.println(peopleRead.get(krok-1).getLastName());
+                }
+                krok++;
+            }
+
+
+        }
+        catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+        finally {
+            return peopleRead;
         }
 
     }
