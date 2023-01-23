@@ -5,12 +5,8 @@ import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -49,26 +45,6 @@ public class People {
         personList.remove(person);
     }
 
-    private void assignId(List listToAssign){
-        for (int i = 0; i < listToAssign.size(); i++) {
-            Person member = (Person) listToAssign.get(i);
-            member.setId(i);
-        }
-    }
-
-    public void createSampleList() throws IOException {
-        personList.add(new Person("Jiri", "Nedomlel"));
-        personList.add(new Person("Pavel", "Resch"));
-        personList.add(new Person("Kamil", "Novak"));
-        personList.add(new Person("Anna", "Kolinska"));
-        personList.add(new Person("Eva", "Adamova"));
-        personList.add(new Person("Martin", "Just"));
-        personList.add(new Person("Kamil", "Barabas"));
-        personList.add(new Person("Jiri", "Novak"));
-//        sortPeople();
-        writePeopleToCSV(personList, "sampleFile.csv");
-        assignId(personList);
-    }
 
     public void writePeopleToCSV(List<Person> listOsob, String filePath) {
 
@@ -83,78 +59,79 @@ public class People {
             // vytvoreni delimited listu pro zapis do file
             List<String[]> entries = new ArrayList<>();
             String[] textEntry = new String[4];
-            int ukazatel = 0;
-            for (Person itemPerson: listOsob) {
+
+            for (Person itemPerson : listOsob) {
                 textEntry[0] = itemPerson.getFirstName();
                 textEntry[1] = itemPerson.getLastName();
                 textEntry[2] = itemPerson.getEmail();
                 textEntry[3] = itemPerson.getPhoneNumber();
-//                System.out.println(textEntry[1]);
                 entries.add(textEntry);
                 writer.writeNext(textEntry);
-                ukazatel++;
             }
             writer.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public List<Person> readPeopleFromCSV(String filePath) {
+    public List<Person> readPeopleFromCSV(String filePath) throws IOException {
 
-//        File file = new File(filePath);
         List<Person> peopleRead = new ArrayList<Person>();
 
         try {
             FileReader fileReader = new FileReader(filePath);
             CSVReader reader = new CSVReader(fileReader);
-
             String[] nextRecord;
             int krok = 1;
-            while ((nextRecord = reader.readNext()) != null) {
 
-                for (String cell: nextRecord) {
+            while ((nextRecord = reader.readNext()) != null) {
+                for (String cell : nextRecord) {
 
                     String[] personString = cell.split(";");
                     Person prs = new Person(personString[0], personString[1]);
-//                    System.out.printf("Read CSV, cell %d", krok);
-//                    System.out.println(personString[0]);
-
                     peopleRead.add(prs);
-                    System.out.println(peopleRead.get(krok-1).getLastName());
                 }
                 krok++;
             }
-
-
-        }
-        catch (IOException | CsvValidationException e) {
+        } catch (CsvValidationException e) {
             e.printStackTrace();
-        }
-        finally {
+        } catch (FileNotFoundException e) {
+            System.out.println("ReadCSV method -> FileNotFoundException  activated");
+        } finally {
             return peopleRead;
         }
 
     }
 
 
-    public void sortPeople() {
-        List<String> BySurname = new ArrayList<String>();
-        for (Person person : personList) {
-            BySurname.add(person.getLastName());
-        }
-        Collections.sort(BySurname);
-        for (String surname : BySurname) {
-            for (int i=0; i < personList.size(); i++) {
-                if (personList.get(i).getLastName().equalsIgnoreCase(surname)) {
-                    personList.add(personList.get(i));
-                    personList.remove(i);
-                    continue;
-                }
-            }
-        }
-    }
+//    Pripraveno pro pripadnou nutnost sortovat model data:
+//
+//    public void sortPeople() {
+//        List<String> BySurname = new ArrayList<String>();
+//        for (Person person : personList) {
+//            BySurname.add(person.getLastName());
+//        }
+//        Collections.sort(BySurname);
+//        for (String surname : BySurname) {
+//            for (int i = 0; i < personList.size(); i++) {
+//                if (personList.get(i).getLastName().equalsIgnoreCase(surname)) {
+//                    personList.add(personList.get(i));
+//                    personList.remove(i);
+//                    continue;
+//                }
+//            }
+//        }
+//    }
+
+//    Pripraveno pro pridani Id ke kazde Person, pokud bude treba k zajisteni
+//    konzistence dat pri upravach ve View:
+//
+//    private void assignId(List listToAssign) {
+//        for (int i = 0; i < listToAssign.size(); i++) {
+//            Person member = (Person) listToAssign.get(i);
+//            member.setId(i);
+//        }
+//    }
 
 }

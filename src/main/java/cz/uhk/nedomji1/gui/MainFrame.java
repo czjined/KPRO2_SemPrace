@@ -29,7 +29,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 
     public MainFrame(ArrayList tabData) throws HeadlessException {
-        super("Okno evidence");
+        super("Seznam osob");
         this.tabData = tabData;
 
         createTabModel(tabData);
@@ -116,17 +116,19 @@ public class MainFrame extends JFrame implements ActionListener {
 
     private void initWindow() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(1200,800));
+        setMinimumSize(new Dimension(1200, 800));
         setLocationRelativeTo(null);
         JPanel innerPanel = new JPanel(new BorderLayout());
-//        innerPanel.setMaximumSize(new Dimension(800,600));
-        add(innerPanel,"Center");
+        add(innerPanel, "Center");
 
-        // Severni panel
-        JPanel northPanel = new JPanel();
-        northPanel.setBackground(Color.WHITE);
-        northPanel.setBorder(BorderFactory.createTitledBorder("North panel"));
-        innerPanel.add(northPanel, BorderLayout.NORTH);
+//          Severni panel - nevyuzit
+//
+//        JPanel northPanel = new JPanel();
+//        northPanel.setBackground(Color.WHITE);
+//        northPanel.setBorder(BorderFactory.createTitledBorder("North panel"));
+//        innerPanel.add(northPanel, BorderLayout.NORTH);
+
+        createMenu();
 
         // Jizni panel s tlacitky
         JPanel btPanel = new JPanel();
@@ -146,6 +148,8 @@ public class MainFrame extends JFrame implements ActionListener {
         innerPanel.add(new JScrollPane(table), BorderLayout.CENTER);
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+
 
 
         /**
@@ -205,5 +209,66 @@ public class MainFrame extends JFrame implements ActionListener {
             }
         }
     }
+
+    /**
+     * Vytvari a inicializuje menu
+     */
+    private void createMenu() {
+        JMenuBar bar = new JMenuBar();
+
+        //File menu
+        JMenu fileMenu = new JMenu("Soubor");
+        fileMenu.setMnemonic('S');
+
+        final JMenuItem addNew = new JMenuItem("Novy");
+        final JMenuItem addOpen = new JMenuItem("Otevri");
+        final JMenuItem addSave = new JMenuItem("Uloz");
+
+        addNew.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 System.out.println("Stisknuto v Menu SOUBOR -> Novy");
+             }
+        });
+
+        addOpen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Stisknuto v Menu SOUBOR ->  " + e.getActionCommand());
+            }
+        });
+
+        addSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Stisknuto v Menu SOUBOR ->  " + e.getActionCommand());
+            }
+        });
+
+        fileMenu.add(addNew);
+        fileMenu.addSeparator();
+        fileMenu.add(addOpen);
+        fileMenu.addSeparator();
+        fileMenu.add(addSave);
+        fileMenu.addSeparator();
+
+        //Program menu
+        JMenu appMenu = new JMenu("Program");
+        appMenu.setMnemonic('P');
+        final JMenuItem addAbout = new JMenuItem("O programu");
+        final JMenuItem addExit = new JMenuItem("Ukoncit");
+
+        appMenu.add(addAbout);
+        appMenu.addSeparator();
+        appMenu.add(addExit);
+        appMenu.addSeparator();
+
+        bar.add(fileMenu);
+        bar.add(appMenu);
+
+        setJMenuBar(bar);
+    }
+
+
 
 }
