@@ -39,7 +39,7 @@ public class MainFrame extends JFrame implements ActionListener {
         People testPeople = new People();
         tabData = testPeople.readPeopleFromCSV(dataFileCSV);
 
-        // Vykresleni tabulky
+        // Vykresleni tabulky a inicializace
         createTabModel((ArrayList) tabData);
         initWindow();
         pack();
