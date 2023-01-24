@@ -35,7 +35,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
         // Prvotni nacteni seznamu osob
         // TODO vylepseni: otevirat aplikaci s naposledy otevrenym seznamem - File In/Out Stream to bin
-        dataFileCSV = "P:\\pracovni\\Java\\Projects\\KPRO2\\KPRO2_SemPrace\\NedoAddressList.csv";
+        dataFileCSV = "P:\\pracovni\\Java\\Projects\\KPRO2\\KPRO2_SemPrace\\SampleAddressList.csv";
         People testPeople = new People();
         tabData = testPeople.readPeopleFromCSV(dataFileCSV);
 
@@ -97,7 +97,10 @@ public class MainFrame extends JFrame implements ActionListener {
 
              @Override
              public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+                 int modelRow = table.convertRowIndexToModel(rowIndex);         // Zde nelze pouzit!
+                 int modelColumn = table.convertColumnIndexToModel(columnIndex);
                  Person personUpdated = (Person) tabData.get(rowIndex);
+                 System.out.println("Budu upravovat personu:  "+tabData.get(rowIndex));
                  switch (columnIndex) {
                      case 3:
                          personUpdated.setPhoneNumber((String) aValue);
@@ -112,9 +115,9 @@ public class MainFrame extends JFrame implements ActionListener {
                          personUpdated.setLastName((String) aValue);
                          break;
                  }
-
+                 System.out.println("Zadana persona:  "+personUpdated);
                  tabData.set(rowIndex,personUpdated);
-                 System.out.println("Edituji personu:  "+personUpdated);
+                 System.out.println("Vysledna model persona:  "+tabData.get(rowIndex));
              }
          };
 
