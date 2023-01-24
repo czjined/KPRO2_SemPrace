@@ -75,7 +75,7 @@ public class People {
 
     }
 
-    public List<Person> readPeopleFromCSV(String filePath) throws IOException {
+    public List<Person> readPeopleFromCSV(String filePath) {
 
         List<Person> peopleRead = new ArrayList<Person>();
 
@@ -87,10 +87,11 @@ public class People {
 
             while ((nextRecord = reader.readNext()) != null) {
                 for (String cell : nextRecord) {
-
-                    String[] personString = cell.split(";");
-                    Person prs = new Person(personString[0], personString[1]);
-                    peopleRead.add(prs);
+                    if (krok != 1) {
+                        String[] personString = cell.split(";");
+                        Person prs = new Person(personString[0], personString[1], personString[2], personString[3]);
+                        peopleRead.add(prs);
+                    }
                 }
                 krok++;
             }

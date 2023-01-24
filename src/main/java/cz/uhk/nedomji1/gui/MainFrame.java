@@ -1,6 +1,7 @@
 package cz.uhk.nedomji1.gui;
 
 
+import cz.uhk.nedomji1.data.People;
 import cz.uhk.nedomji1.data.Person;
 
 import javax.swing.*;
@@ -16,9 +17,10 @@ import java.util.List;
 
 public class MainFrame extends JFrame implements ActionListener {
 
+    private static String dataFileCSV;
     Container c = getContentPane();
     AbstractTableModel tableModel;
-    ArrayList tabData = new ArrayList();
+    List<Person> tabData = new ArrayList();
     String[] header = {"Prijmeni", "Jmeno", "Email", "Telefon"};
     JTable table;
 
@@ -28,16 +30,23 @@ public class MainFrame extends JFrame implements ActionListener {
     JButton btnFilter = new JButton("Filtrovat");
 
 
-    public MainFrame(ArrayList tabData) throws HeadlessException {
+    public MainFrame() throws HeadlessException {
         super("Seznam osob");
-        this.tabData = tabData;
 
-        createTabModel(tabData);
+        // Prvotni nacteni seznamu osob
+        // TODO vylepseni: otevirat aplikaci s naposledy otevrenym seznamem - File In/Out Stream to bin
+        dataFileCSV = "P:\\pracovni\\Java\\Projects\\KPRO2\\KPRO2_SemPrace\\NedoAddressList.csv";
+        People testPeople = new People();
+        tabData = testPeople.readPeopleFromCSV(dataFileCSV);
+
+        // Vykresleni tabulky
+        createTabModel((ArrayList) tabData);
         initWindow();
         pack();
 
     }
 
+    // TODO vylepseni: Table model jako samostatna ext. trida
     private AbstractTableModel createTabModel(final ArrayList seznam) {
          tableModel = new AbstractTableModel() {
              @Override
@@ -121,14 +130,16 @@ public class MainFrame extends JFrame implements ActionListener {
         JPanel innerPanel = new JPanel(new BorderLayout());
         add(innerPanel, "Center");
 
-//          Severni panel - nevyuzit
-//
-//        JPanel northPanel = new JPanel();
-//        northPanel.setBackground(Color.WHITE);
-//        northPanel.setBorder(BorderFactory.createTitledBorder("North panel"));
-//        innerPanel.add(northPanel, BorderLayout.NORTH);
-
         createMenu();
+
+        // Severni panel - otevreny datovy soubor
+        JPanel northPanel = new JPanel();
+        JTextArea txtNadpis = new JTextArea(dataFileCSV);
+        northPanel.setBackground(Color.WHITE);
+//        northPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        northPanel.add(txtNadpis);
+        innerPanel.add(northPanel, BorderLayout.NORTH);
+
 
         // Jizni panel s tlacitky
         JPanel btPanel = new JPanel();
@@ -227,7 +238,7 @@ public class MainFrame extends JFrame implements ActionListener {
         addNew.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                 System.out.println("Stisknuto v Menu SOUBOR -> Novy");
+                 System.out.println("Stisknuto v Menu SOUBOR ->  "+ e.getActionCommand());
              }
         });
 
@@ -250,7 +261,6 @@ public class MainFrame extends JFrame implements ActionListener {
         fileMenu.add(addOpen);
         fileMenu.addSeparator();
         fileMenu.add(addSave);
-        fileMenu.addSeparator();
 
         //Program menu
         JMenu appMenu = new JMenu("Program");
@@ -261,7 +271,7 @@ public class MainFrame extends JFrame implements ActionListener {
         appMenu.add(addAbout);
         appMenu.addSeparator();
         appMenu.add(addExit);
-        appMenu.addSeparator();
+
 
         bar.add(fileMenu);
         bar.add(appMenu);
