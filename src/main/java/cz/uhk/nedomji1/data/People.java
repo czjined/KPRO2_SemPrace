@@ -87,11 +87,9 @@ public class People {
 
             while ((nextRecord = reader.readNext()) != null) {
                 for (String cell : nextRecord) {
-                    if (krok != 1) {
-                        String[] personString = cell.split(";");
-                        Person prs = new Person(personString[0], personString[1], personString[2], personString[3]);
-                        peopleRead.add(prs);
-                    }
+                    String[] personString = cell.split(";");
+                    Person prs = new Person(personString[0], personString[1], personString[2], personString[3]);
+                    peopleRead.add(prs);
                 }
                 krok++;
             }
